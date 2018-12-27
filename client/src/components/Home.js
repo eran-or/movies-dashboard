@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 // import CommentForm from "./CommentForm";
-import TruncateMarkup from 'react-truncate-markup';
 
 class Home extends Component {
   state = {}
