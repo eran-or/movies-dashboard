@@ -8,10 +8,17 @@
 
 @media only screen and (min-width: 576px) {
   .scaleDown{
-    max-height: 200px;
+    max-height: 240px;
     object-fit: scale-down;
   }
   .movie-box{
-    width:auto;
+    width:410px;
+    position: relative;
   }
+  .movie-box button{
+    position: absolute;
+    width: 67px !important;
+    right: 0;
+  }
+  
 }
