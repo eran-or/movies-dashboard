@@ -1,43 +1,85 @@
-import React, { Component } from 'react';
-import './App.css';
-// import CommentForm from "./CommentForm";
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import './App.css'
+import { fetchMovies, updateMovies } from '../redux/actions/'
+import Movie from './Movie'
+import Modal from './Modal'
 
 class Home extends Component {
-  state = {}
+  state = {
+    editMode: false
+  }
   componentDidMount() {
-    let movies = []
-    fetch('https://api.themoviedb.org/3/discover/movie?api_key=9dc58f8026e43c67f75c2a110b7d6162')
-      .then(res => res.json()).then(json => json.results.map((v, i) =>
-        fetch(`http://www.omdbapi.com/?&plot=full&apikey=bc2b28c9&t=${v.title}`)
-          .then(res => res.json())
-          .then(res => movies.push(res))
-      )).then(promises => {
-        Promise.all(promises).then(res => {
-          this.setState({ movies })
-        })
+    const { fetchMovies } = this.props
+    fetchMovies()
+  }
+
+  onEdit = (id) => {
+    this.setState({ editMode: true, selectedMovie: this.props.movies[id], selectedMovieId:id })
+  }
+
+  toggle = () => {
+    this.setState({ editMode: !this.state.editMode })
+  }
+
+  handleChange = (e)=>{
+    this.setState({
+      selectedMovie:{...this.state.selectedMovie,[e.target.name]:e.target.value}
       })
   }
+
+  updateMovies = () => {
+    const {updateMovies, movies} = this.props
+    const copy = [...movies]
+    
+    copy[this.state.selectedMovieId] = this.state.selectedMovie
+    this.setState({selectedMovie:undefined, selectedMovieId:undefined})
+    updateMovies(copy)
+    this.toggle()
+  }
   render() {
-    const { movies } = this.state
+    const { movies } = this.props
+    const { editMode, selectedMovie={} } = this.state
+    const footer = { action: this.updateMovies, actionText: "Save" }
     return (
       <div className="App row flex-column flex-sm-row m-auto">
-        {movies && movies.map((m, i) =>
-          <div key={i} className="movie-box d-flex align-items-center align-items-sm-start rounded border flex-column mx-auto mb-2 flex-sm-row">
-            <img src={m.Poster} alt="" className="rounded scaleDown" />
-            <div className="col-12 py-2 movie-info col-sm-7">
-              <h5>{m.Title}</h5>
-              <p className="m-0"><strong>Year:</strong>{m.Year}</p>
-              <p className="m-0"><strong>Runtime:</strong>{m.Runtime}</p>
-              <p className="m-0"><strong>Genre:</strong>{m.Genre}</p>
-              <p className="m-0"><strong>Director:</strong>{m.Director}</p>
-            </div>
-            <button type="button" className="w-100 btn btn-primary align-self-sm-end">Edit</button>
-          </div>
-        )}
-
+        {movies && movies.map((m, i) => <Movie key={i} movie={m} onEdit={() => this.onEdit(i)} />)}
+        <Modal isOpen={editMode} toggle={this.toggle} footer={footer}>
+          <form >
+            <label>
+              Title:
+              <input type="text" name="Title" value={selectedMovie.Title || ''} onChange={this.handleChange}/>
+            </label>
+            <label>
+              Year:
+              <input type="text" name="Year" value={selectedMovie.Year || ''} onChange={this.handleChange}/>
+            </label>
+            <label>
+              Runtime:
+              <input type="text" name="Runtime" value={selectedMovie.Runtime || ''} onChange={this.handleChange}/>
+            </label>
+            <label>
+              Genre:
+              <input type="text" name="Genre" value={selectedMovie.Genre || ''} onChange={this.handleChange}/>
+            </label>
+            <label>
+              Director:
+              <input type="text" name="Director" value={selectedMovie.Director || ''} onChange={this.handleChange}/>
+            </label>
+          </form>
+        </Modal>
       </div>
     );
   }
 }
 
-export default Home;
+const mapStateToProps = state => ({
+  movies: state.movies
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchMovies: () => dispatch(fetchMovies()),
+  updateMovies: (movies) => dispatch(updateMovies(movies)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

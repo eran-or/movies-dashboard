@@ -1,0 +1,1 @@
+export {fetchMovies, updateMovies} from './movies'

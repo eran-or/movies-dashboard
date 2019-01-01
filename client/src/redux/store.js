@@ -1,13 +1,13 @@
 
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import comments from './reducers/comments'
+import movies from './reducers/movies'
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export default () => {
   //Store cretion
   const store = createStore(
-    comments,
+    movies,
     composeEnhancers(applyMiddleware(thunk))
   )
   return store
