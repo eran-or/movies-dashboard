@@ -15,10 +15,7 @@
     width:410px;
     position: relative;
   }
-  .movie-box button{
-    position: absolute;
-    width: 67px !important;
-    right: 0;
+  .movie-info{
+    height:100%;
   }
-  
 }

@@ -5,9 +5,13 @@ function requestMovies() {
   }
 }
 function receiveMovies(movies) {
+  
   return {
     type: RECEIVE_MOVIES,
-    movies,
+    movies: movies.map(movie=>{
+      movie.Title = movie.Title.replace(/[^\w* -]/g,"").toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
+      return movie
+    }),
     receivedAt: Date.now()
   }
 }

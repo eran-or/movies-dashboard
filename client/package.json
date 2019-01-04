@@ -5,6 +5,7 @@
   "dependencies": {
     "bootstrap": "^4.2.1",
     "immutability-helper": "^2.8.1",
+    "moment": "^2.23.0",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
     "react-popper": "^1.3.2",

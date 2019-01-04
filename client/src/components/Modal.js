@@ -4,7 +4,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 class Modali extends Component {
 
   render() {
-    const {isOpen, toggle,children, title, footer} = this.props
+    const {isOpen, toggle, children, title, footer} = this.props
     const {action, actionText} = footer
     const showActionButtons = (action)?true:false
     
