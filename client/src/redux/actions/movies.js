@@ -18,7 +18,7 @@ function receiveMovies(movies) {
 
 export const fetchMovies = (s) => {
   const themoviedbUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=9dc58f8026e43c67f75c2a110b7d6162'
-  const omdbapiUrl = 'http://www.omdbapi.com/?&plot=full&apikey=bc2b28c9&t='
+  const omdbapiUrl = 'https://www.omdbapi.com/?&plot=full&apikey=bc2b28c9&t='
   return dispatch => {
     dispatch(requestMovies())
     let movies = []
