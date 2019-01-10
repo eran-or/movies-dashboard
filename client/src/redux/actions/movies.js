@@ -5,20 +5,22 @@ function requestMovies() {
   }
 }
 function receiveMovies(movies) {
-  
   return {
     type: RECEIVE_MOVIES,
-    movies: movies.map(movie=>{
-      movie.Title = movie.Title.replace(/[^\w* -]/g,"").toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
+    movies: movies.reduce((movie, next)=>{
+      if(next.Title){
+        next.Title = next.Title.replace(/[^\w* -]/g,"").toLowerCase().replace(/\b\w/g, l => l.toUpperCase())
+        movie.push(next)
+      }
       return movie
-    }),
+    },[]),
     receivedAt: Date.now()
   }
 }
 
 export const fetchMovies = (s) => {
   const themoviedbUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=9dc58f8026e43c67f75c2a110b7d6162'
-  const omdbapiUrl = 'https://www.omdbapi.com/?&plot=full&apikey=bc2b28c9&t='
+  const omdbapiUrl = 'https://www.omdbapi.com/?plot=full&apikey=bc2b28c9&t='
   return dispatch => {
     dispatch(requestMovies())
     let movies = []
